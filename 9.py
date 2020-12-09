@@ -3,25 +3,10 @@ import itertools
 
 vals = [int(line) for line in sys.stdin.readlines()]
 
-preamble = [val for val in vals[:25]]
-
-invalid = None
-for val in vals[25:]:
-  if any([a + b == val for a, b in itertools.combinations(set(preamble), 2)]):
-    preamble.pop(0)
-    preamble.append(val)
-  else:
-    invalid = val
-    break
+buffer = 25
+invalid = next(vals[i] for i in range(buffer, len(vals)) if not any(a + b == vals[i] for a, b in itertools.combinations(vals[i - buffer: i], 2)))
 
 print(invalid)
 
-for r in range(2, len(vals)):
-  for i in range(len(vals) - r + 1):
-    part = vals[i: i + r]
-    if sum(part) == invalid:
-      print(min(part) + max(part))
-      break
-  else: # propagate break
-    continue
-  break
+parts = (vals[i: i + r] for r in range(2, len(vals)) for i in range(len(vals) - r + 1))
+print(next(min(part) + max(part) for part in parts if sum(part) == invalid))
