@@ -1,7 +1,6 @@
 import sys
 import itertools
 
-# (cur, prev)
 state = [line.rstrip() for line in sys.stdin.readlines()]
 
 def countAdj(x, y):
