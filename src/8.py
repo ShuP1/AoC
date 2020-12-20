@@ -9,7 +9,7 @@ def parse(line):
 
 insts = list([parse(line.strip()) for line in lines if line.strip()])
 
-def exec():
+def run():
   path = []
   acc = 0
   ptr = 0
@@ -29,7 +29,7 @@ def exec():
       return False
   return (acc, ptr)
 
-print(exec()[0])
+print(run()[0])
 
 def fixInst(i):
   if insts[i][0] == 'jmp':
@@ -45,7 +45,7 @@ for i in range(len(insts)):
   if not fixInst(i):
     continue
 
-  (acc, ptr) = exec()
+  (acc, ptr) = run()
   if ptr >= len(insts):
     print(acc)
 

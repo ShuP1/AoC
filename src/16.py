@@ -21,7 +21,7 @@ sys.stdin.readline()
 assert sys.stdin.readline().startswith("nearby tickets")
 near_tickets = [[int(i) for i in line.rstrip().split(',')] for line in sys.stdin]
 
-print(rules, my_ticket, near_tickets)
+# print(rules, my_ticket, near_tickets)
 
 # part 1
 error_rate = 0
@@ -35,7 +35,7 @@ for ticket in near_tickets:
   if valid:
     valid_tickets.append(ticket)
 
-print('Part 1', error_rate)
+print(error_rate)
 
 # part 2
 orders = [None] * len(my_ticket)
@@ -58,4 +58,4 @@ def prod(it):
   import operator
   return reduce(operator.mul, it, 1)
 
-print('Part 2', prod(my_ticket[i] for i, name in enumerate(orders) if name.startswith('departure')))
+print(prod(my_ticket[i] for i, name in enumerate(orders) if name.startswith('departure')))

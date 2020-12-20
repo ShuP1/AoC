@@ -7,10 +7,6 @@ while line.strip():
     rules[int(num)] = [[int(i) if i.isdigit() else i.strip('"') for i in option.split(' ')] for option in rest.split(' | ')]
     line = sys.stdin.readline()
 
-# part 2
-rules[8] = [[42], [42, 8]]
-rules[11] = [[42, 31], [42, 11, 31]]
-
 messages = [line.strip() for line in sys.stdin.readlines()]
 
 def is_valid(message):
@@ -40,10 +36,16 @@ def is_valid(message):
 
     return False
 
+def solve():
+    valids = 0
+    for message in messages:
+        if is_valid(message):
+            valids +=1
 
-valids = 0
-for message in messages:
-    if is_valid(message):
-        valids +=1
+    print(valids)
 
-print(valids)
+solve()
+
+rules[8] = [[42], [42, 8]]
+rules[11] = [[42, 31], [42, 11, 31]]
+solve()

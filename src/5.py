@@ -1,5 +1,4 @@
 import sys
-import itertools
 
 lines = sys.stdin.readlines()
 
@@ -8,10 +7,10 @@ def getId(line):
     for idx, char in enumerate(line.strip())])
 
 seats = list(map(getId, lines))
-print("Max seat id:", max(seats))
+print(max(seats))
 
 for seat in seats:
   my_seat = seat + 1
   next_seat = my_seat + 1
   if my_seat not in seats and next_seat in seats:
-    print("Free seat id:", my_seat)
+    print(my_seat)

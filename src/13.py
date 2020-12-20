@@ -1,6 +1,5 @@
 import sys
 import math
-import itertools
 
 depart = int(sys.stdin.readline())
 line2 = sys.stdin.readline()
