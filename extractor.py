@@ -6,7 +6,7 @@ import re
 year = '2020'
 assert len(sys.argv) == 2, "Usage: $0 session_id"
 session = sys.argv[1]
-answer_re = re.compile(r'<p>Your puzzle answer was <code>(\d+)</code>.</p>')
+answer_re = re.compile(r'<p>Your puzzle answer was <code>([\w,]+)</code>.</p>')
 
 def get(path):
     url = 'https://adventofcode.com/'+year+'/'+path
