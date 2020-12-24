@@ -3,9 +3,8 @@ import requests
 import re
 
 # Extract previous inputs and answers
-year = '2020'
-assert len(sys.argv) == 2, "Usage: $0 session_id"
-session = sys.argv[1]
+assert len(sys.argv) == 3, "Usage: $0 year session_id"
+_, year, session = sys.argv
 answer_re = re.compile(r'<p>Your puzzle answer was <code>([\w,]+)</code>.</p>')
 
 def get(path):

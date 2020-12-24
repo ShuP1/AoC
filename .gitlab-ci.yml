@@ -1,9 +1,14 @@
 stages:
   - test
 
-test:
+.py:
+  image: python:3
   stage: test
   script:
-    - apt-get update -qy
-    - apt-get install -y python3-dev
-    - python3 runner.py data "python3 src/_.py"
+    - python runner.py data/$CI_JOB_NAME "python src/$CI_JOB_NAME/_.py"
+
+2019:
+  extends: .py
+
+2020:
+  extends: .py

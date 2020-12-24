@@ -4,24 +4,27 @@ import subprocess
 import time
 
 # Check solutions with extractor.py data
-usage = 'Usage: $0 data "python _.py"'
+usage = 'Usage: $0 data/2020 "python src/2020/_.py"'
 
 assert len(sys.argv) == 3, usage
 
 qdir = sys.argv[1]
 files = os.listdir(qdir)
 days = {}
-for path in files:
+for path in sorted(files):
     parts = path.split('.input', 1)
     if len(parts) == 2:
         day = parts[0]
-        inp = None
-        with open(os.path.join(qdir, path), 'r') as f:
-            inp = f.read()
-        ans = None
-        with open(os.path.join(qdir, day + '.answers'), 'r') as f:
-            ans = f.read()
-        days[int(day) if day.isdigit() else day] = (inp, ans.strip())
+        try:
+            inp = None
+            with open(os.path.join(qdir, path), 'r') as f:
+                inp = f.read()
+            ans = None
+            with open(os.path.join(qdir, day + '.answers'), 'r') as f:
+                ans = f.read()
+            days[int(day) if day.isdigit() else day] = (inp, ans.strip())
+        except FileNotFoundError as err:
+            print('file not found:', err.filename)
 
 solutions = sys.argv[2].split('_')
 assert len(solutions) == 2, usage
