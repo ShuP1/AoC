@@ -1,10 +1,12 @@
+import os
 import sys
 import requests
 import re
 
 # Extract previous inputs and answers
-assert len(sys.argv) == 3, "Usage: $0 year session_id"
-_, year, session = sys.argv
+assert len(sys.argv) == 2 if 'SESSION' in os.environ else 3, "Usage: SESSION=??? $0 year || $0 year session_id"
+year = sys.argv[1]
+session = sys.argv[2] if len(sys.argv) == 3 else os.environ.get('SESSION')
 answer_re = re.compile(r'<p>Your puzzle answer was <code>([\w,]+)</code>.</p>')
 
 def get(path):

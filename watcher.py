@@ -8,16 +8,16 @@ import subprocess, platform
 
 OVERRIDE = False
 
-usage = "Usage: $0 session_id (year day)"
+usage = "Usage: SESSION=? $0 (year day) | $0 (year day) session_id"
 
-assert len(sys.argv) in [2, 4], usage
+assert len(sys.argv) + (1 if 'SESSION' in os.environ else 0) in [2, 4], usage
 
 answer_re = re.compile(r'<p>Your puzzle answer was <code>([\w,]+)</code>.</p>')
 
-session = sys.argv[1]
+session = sys.argv[2] if len(sys.argv) in [2, 4] else os.environ.get('SESSION')
 today = date.today() # assume timezone >= UTC-5
-if len(sys.argv) > 2:
-    year, day = sys.argv[2:]
+if len(sys.argv) > 1:
+    year, day = sys.argv[1:3]
 elif today.month == 12:
     year = str(today.year)
     day = str(today.day)
