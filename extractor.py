@@ -20,10 +20,10 @@ for i in range(0, 25):
         ans = get('day/' + day)
         assert ans.status_code == 200
         answers = answer_re.findall(ans.text)
-        if len(answers) == 2:
+        if len(answers) != 2:
+            print(day + ': ' + str(len(answers)) + ' answer(s)')
+        if len(answers) > 0:
             with open(day + '.answers', 'w') as f:
                 f.write('\n'.join(answers))
-        else:
-            print(day + ': ' + str(len(answers)) + ' answer(s)')
     else:
         print(day + ': no input')
