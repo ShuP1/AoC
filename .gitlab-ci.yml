@@ -12,3 +12,6 @@ py2019:
 
 py2020:
   extends: .py
+
+py2021:
+  extends: .py
