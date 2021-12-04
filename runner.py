@@ -6,7 +6,7 @@ import subprocess
 import time
 
 # Check solutions with extractor.py data
-usage = 'Usage: $0 data/2020 "python src/2020/_.py"'
+usage = 'Usage: $0 data/2021 "python3 src/2021/_.py"'
 
 assert len(sys.argv) == 3, usage
 

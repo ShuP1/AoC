@@ -82,7 +82,7 @@ while len(answers) < 2:
     if stamp != os.stat(code_path).st_mtime:
         stamp = os.stat(code_path).st_mtime
 
-        result = subprocess.run('python ' + code_path, shell=True, stdout=subprocess.PIPE, input=input_text, text=True)
+        result = subprocess.run(sys.executable + ' ' + code_path, shell=True, stdout=subprocess.PIPE, input=input_text, text=True)
         if result.returncode > 0:
             continue
 
