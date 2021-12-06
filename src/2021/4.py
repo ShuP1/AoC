@@ -28,7 +28,7 @@ def play(number):
     return inner
 
 for number in numbers:
-    grids = filter(play(number), grids)
+    grids = list(filter(play(number), grids))
 
 print(first)
 print(last)
