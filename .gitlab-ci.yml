@@ -7,6 +7,9 @@ stages:
   script:
     - python runner.py data/${CI_JOB_NAME:2} "python src/${CI_JOB_NAME:2}/_.py"
 
+py2015:
+  extends: .py
+
 py2019:
   extends: .py
 
