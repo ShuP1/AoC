@@ -1,5 +1,6 @@
 import sys
 from itertools import product, count
+from time import sleep
 
 GRID = [[*map(int, line.strip())] for line in sys.stdin.readlines()]
 N = len(GRID)
@@ -30,6 +31,10 @@ def step():
 
     for x, y in flash:
         GRID[x][y] = 0
+
+    # fmt = lambda row: ''.join('\033[{1}m{0}'.format(v, 0 if v else 1) for v in row)
+    # print('\n'.join(map(fmt, GRID)) ,'\n', file=sys.stderr)
+    # sleep(len(flash) / (N*N*3))
 
     return len(flash)
 
