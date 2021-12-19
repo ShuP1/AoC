@@ -1,4 +1,6 @@
 import sys, math
+from copy import deepcopy
+from itertools import permutations
 
 lines = sys.stdin.readlines()
 def parse(line):
@@ -74,9 +76,9 @@ def reduce(n):
             break
     return n
 
-S = NUMS[0]
+S = deepcopy(NUMS[0])
 for n in NUMS[1:]:
-    S = reduce([S, n])
+    S = reduce([S, deepcopy(n)])
 
 def mag(n):
     if isinstance(n, list):
@@ -85,8 +87,5 @@ def mag(n):
         return n
 
 print(mag(S))
-
-# from itertools import permutations
-# print(max( mag(reduce([a, b])) for a,b in
-#    permutations([parse(line.strip()) for line in lines], 2) ))
-print('4616') # sad
+print(max( mag(reduce(deepcopy([a, b])))
+    for a,b in permutations(NUMS, 2) ))
