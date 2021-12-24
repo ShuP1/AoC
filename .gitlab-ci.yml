@@ -13,6 +13,9 @@ py2015:
 py2016:
   extends: .py
 
+py2017:
+  extends: .py
+
 py2019:
   extends: .py
 
