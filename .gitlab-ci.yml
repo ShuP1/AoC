@@ -5,3 +5,9 @@ py-runner:
   parallel:
     matrix:
       - YEAR: [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022]
+  rules:
+    - changes:
+      - src/$YEAR/*
+      - data/$YEAR/*
+    - when: manual
+      allow_failure: false
