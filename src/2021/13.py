@@ -1,4 +1,6 @@
-import sys
+import sys, os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from ocr import ocr_array
 
 lines = sys.stdin.readlines()
 sep = lines.index('\n')
@@ -20,10 +22,7 @@ print(len(code))
 for line in lines[sep+2:]:
     code = fold(code, line)
 
-screen = [[' '] * 40 for _ in range(6)]
+screen = [['.'] * 40 for _ in range(6)]
 for x, y in code:
     screen[y][x] = '#'
-# using human powers
-# print('\n'.join(''.join(row) for row in screen))
-
-print('BCZRCEAB')
+print(ocr_array(screen))

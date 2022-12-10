@@ -1,3 +1,4 @@
 input*
 test*
 .envrc
+__pycache__

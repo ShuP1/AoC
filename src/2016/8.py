@@ -1,16 +1,18 @@
-import sys
+import sys, os
 from itertools import product
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from ocr import ocr_array
 
 lines = sys.stdin.readlines()
 X, Y = 50, 6
-screen = [[False]*X for _ in range(Y)]
+screen = [['.']*X for _ in range(Y)]
 
 for line in lines:
     parts = line.strip().split()
     if parts[0] == 'rect':
         a, b = map(int, parts[1].split('x'))
         for x, y in product(range(a), range(b)):
-            screen[y][x] = True
+            screen[y][x] = '#'
     else: 
         a = int(parts[2].split('=')[1])
         b = int(parts[4])
@@ -22,6 +24,5 @@ for line in lines:
             for y, v in enumerate(col):
                 screen[y][a] = v
 
-print(sum(v for row in screen for v in row))
-# print('\n'.join(''.join('#' if v else '.' for v in row) for row in screen), '\n')
-print('eoargphyao') # read it, human
+print(sum(v == '#' for row in screen for v in row))
+print(ocr_array(screen))
