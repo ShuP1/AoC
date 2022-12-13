@@ -54,3 +54,5 @@ print('Rank by delay between first and second stars')
 rank_by_day(star2delay, 3, pretty_delay)
 
 rank_all_days(star2delay, sum, 5, pretty_delay)
+
+print('\nTotal stars:', sum(len(day) for member in leaderboard.values() for day in member.get('completion_day_level', {}).values()))
