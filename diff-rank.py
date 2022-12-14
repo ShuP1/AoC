@@ -13,46 +13,35 @@ team = sys.argv[1]
 year = sys.argv[2] if len(sys.argv) > 2 else date.today().year
 
 url = 'https://adventofcode.com/{0}/leaderboard/private/view/{1}.json'.format(year, team)
-leaderboard = requests.get(url, cookies=dict(session=session)).json()['members']
+members = requests.get(url, cookies=dict(session=session)).json()['members']
+members = [(data.get('name') or id, data.get('completion_day_level', {}))
+    for id, data in members.items()]
 
-def rank_by_day(get_score, top, fmt):
-    for day in range(1, 25+1):
-        scores = []
-        for id, member in leaderboard.items():
-            stars = member.get('completion_day_level', {}).get(str(day), {})
-            score = get_score(stars)
-            if score is not None:
-                scores.append((member.get('name') or id, score))
-
-        if scores:
-            print('Day', day, ':')
-            print('\n'.join(map(lambda t: '{0} ({1})'.format(t[0], fmt(t[1]) if fmt else t[1]), sorted(scores, key=lambda t: t[1])[:top])))
-            print()
-
-def rank_all_days(get_score, acc, top, fmt):
-    scores = []
-    max_days = 0
-    for id, member in leaderboard.items():
-        m_scores = list(filter(lambda v: v, map(get_score, member.get('completion_day_level', {}).values())))
-        if len(m_scores) < max_days: continue
-        if len(m_scores) > max_days:
-            scores = []
-            max_days = len(m_scores)
-
-        scores.append((member.get('name') or id, acc(m_scores)))
-
-    print('For all', max_days, 'days:')
-    print('\n'.join(map(lambda t: '{0} ({1})'.format(t[0], fmt(t[1]) if fmt else t[1]), sorted(scores, key=lambda t: t[1])[:top])))
-
-def star2delay(stars): 
-    if '1' in stars and '2' in stars:
-        return stars['2']['get_star_ts'] - stars['1']['get_star_ts']
-def pretty_delay(seconds):
-    return timedelta(seconds=seconds)
+last_day = max(int(day) for _,days in members for day in days)
+star2delays = [(name, [
+    stars['2']['get_star_ts'] - stars['1']['get_star_ts']
+    if '1' in stars and '2' in stars else None
+    for stars in (days.get(str(i+1), {}) for i in range(last_day))
+]) for name, days in members if days]
 
 print('Rank by delay between first and second stars')
-rank_by_day(star2delay, 3, pretty_delay)
+per_day = 3
+for i in range(last_day):
+    scores = sorted((days[i], name) for name, days in star2delays if days[i])[:per_day]
+    if scores:
+        print(f'Day {i+1}:')
+        print('\n'.join(f'{name:20}\t{timedelta(seconds=time)}' for time, name in scores))
+        print()
 
-rank_all_days(star2delay, sum, 5, pretty_delay)
+print('For all', last_day, 'days:')
+N = len(members)
+points = [0]*N
+for i in range(last_day):
+    order = sorted((days[i], idx) for idx, (_, days) in enumerate(star2delays) if days[i])
+    for j, (_, idx) in enumerate(order):
+        points[idx] += N-j
+for pts, (name, days) in sorted(zip(points, star2delays), reverse=True)[:10]:
+    print(f'{name:20}\t{pts}\t{timedelta(seconds=sum(day for day in days if day))}')
+print()
 
-print('\nTotal stars:', sum(len(day) for member in leaderboard.values() for day in member.get('completion_day_level', {}).values()))
+print('Total stars:', sum(len(day) for _,data in members for day in data.values()))
