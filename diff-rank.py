@@ -14,6 +14,7 @@ year = sys.argv[2] if len(sys.argv) > 2 else date.today().year
 
 url = 'https://adventofcode.com/{0}/leaderboard/private/view/{1}.json'.format(year, team)
 members = requests.get(url, cookies=dict(session=session)).json()['members']
+N = max(len(members), 100)
 members = [(data.get('name') or id, data.get('completion_day_level', {}))
     for id, data in members.items()]
 
@@ -34,8 +35,7 @@ for i in range(last_day):
         print()
 
 print('For all', last_day, 'days:')
-N = len(members)
-points = [0]*N
+points = [0]*len(star2delays)
 for i in range(last_day):
     order = sorted((days[i], idx) for idx, (_, days) in enumerate(star2delays) if days[i])
     for j, (_, idx) in enumerate(order):

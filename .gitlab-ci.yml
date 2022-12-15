@@ -9,5 +9,4 @@ py-runner:
     - changes:
       - src/$YEAR/*
       - data/$YEAR/*
-    - when: manual
-      allow_failure: false
+    - if: $CI_PIPELINE_SOURCE != "push"
