@@ -4,7 +4,7 @@ py-runner:
     - python runner.py data/$YEAR "python src/$YEAR/_.py"
   parallel:
     matrix:
-      - YEAR: [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022]
+      - YEAR: [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023]
   rules:
     - changes:
       - src/$YEAR/*
