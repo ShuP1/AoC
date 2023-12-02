@@ -14,7 +14,7 @@ year = sys.argv[2] if len(sys.argv) > 2 else date.today().year
 
 url = 'https://adventofcode.com/{0}/leaderboard/private/view/{1}.json'.format(year, team)
 members = requests.get(url, cookies=dict(session=session)).json()['members']
-N = max(len(members), 100)
+N = max(len(members) * 2, 100)
 members = [(data.get('name') or id, data.get('completion_day_level', {}))
     for id, data in members.items()]
 
