@@ -1,4 +1,5 @@
 import sys
+from heapq import heappop, heappush
 
 B = [l.strip() for l in sys.stdin]
 
@@ -11,33 +12,28 @@ DIRS = (1, 0), (0, 1), (-1, 0), (0, -1)
 INF = float("inf")
 
 best, paths = INF, set()
-q, seen = [((S,), 0, 0)], {(S, 0): 0}
+q, dists = [(0, S, 0, frozenset([S]))], {}
 while q:
-    path, d, c = q.pop()
-    if best < c:
-        continue
-    p = path[-1]
+    c, p, d, path = heappop(q)
     if p == E:
         if c < best:
-            best, paths = c, set(path)
-        else:
-            paths.update(path)
+            best = c
+            paths = path
+        elif c == best:
+            paths |= path
         continue
+
+    k = p, d
+    if dists.get(k, INF) < c:
+        continue
+    dists[k] = c
+
     x, y = p
-    dx, dy = DIRS[d]
-    if c < best:
+    for od, a in ((0, 0), (1, 1000), (3, 1000), (2, 2000)):
+        nd = (d + od) % 4
+        dx, dy = DIRS[nd]
         np = nx, ny = x + dx, y + dy
-        if B[ny][nx] != "#":
-            pd = np, d
-            if c < seen.get(pd, INF):
-                q.append((path + (np,), d, c+1))
-                seen[pd] = c+1
-    nc = c + 1000
-    if nc < best:
-        for nd in (d - 1) % 4, (d + 1) % 4:
-            pd = p, nd
-            if nc <= seen.get(pd, INF):
-                q.append((path, nd, nc))
-                seen[pd] = nc
+        if B[ny][nx] != '#' and np not in path:
+            heappush(q, (c + a + 1, np, nd, path | {np}))
 print(best)
 print(len(paths))
