@@ -40,11 +40,13 @@ def post_answer(part, ans):
 
 print('AoC', year, day)
 
+test_input = 'test'
 input_file = 'data/' + year + '/' + day + '.input'
 inp = get_input()
 input_text = inp.text
 if inp.ok:
-    print('input: ', input_text.split('\n', 3)[:-1])
+    print('Input:')
+    print(input_text)
 else:
     print(inp.reason, input_text)
     exit(1)
@@ -76,21 +78,31 @@ def open_editor(path):
         subprocess.call(('xdg-open', path))
 
 open_editor(code_path)
+
+def run_code(text=input_text):
+    result = subprocess.run(sys.executable + ' ' + code_path, shell=True, stdout=subprocess.PIPE, input=text, text=True)
+    if not result.returncode:
+        return result.stdout.strip()
+
 stamp = os.stat(code_path).st_mtime
 while len(answers) < 2:
     sleep(.5)
     if stamp != os.stat(code_path).st_mtime:
         stamp = os.stat(code_path).st_mtime
 
-        result = subprocess.run(sys.executable + ' ' + code_path, shell=True, stdout=subprocess.PIPE, input=input_text, text=True)
-        if result.returncode > 0:
+        ans = run_code()
+        if not ans:
             continue
 
-        ans = result.stdout.strip().split('\n')
         print(ans)
-        if input('Submit [y] ? ') != 'y':
+        submit = input('Submit [y/t/n] ? ')
+        if submit != 'y':
+            if submit == 't':
+                with open(test_input) as f:
+                    print(run_code(f.read()) or 'Failed')
             continue
 
+        ans = ans.split('\n')
         part = len(answers) + 1
         ans = ans[part - 1]
         res = post_answer(part, ans)
