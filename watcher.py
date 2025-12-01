@@ -75,7 +75,7 @@ def open_editor(path):
     elif platform.system() == 'Windows':
         os.startfile(path)
     else:
-        subprocess.call(('xdg-open', path))
+        subprocess.call((os.environ.get('EDITOR', 'xdg-open'), path))
 
 open_editor(code_path)
 
